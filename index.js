@@ -1,6 +1,7 @@
 const http = require('http');
 const querystring = require('querystring');
 const url = require('url');
+const fs = require('fs');
 
 class MyClassificationPipeline {
     static task = 'text-classification';
@@ -37,21 +38,28 @@ server.on('request', async (req, res) => {
   const { text } = querystring.parse(parsedUrl.query);
 
   // Set the response headers
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // res.setHeader('Content-Type', 'application/json');
+  // res.setHeader('Access-Control-Allow-Origin', '*');
 
   let response;
+
+  if (parsedUrl.pathname == "/") {
+    fs.readFile('index.html', function (err, html) {
+        if (err) throw err;    
+        res.write(html);
+        res.end()
+    });
+  }
+
   if (parsedUrl.pathname === '/classify' && text) {
     const classifier = await MyClassificationPipeline.getInstance();
     response = await classifier(text);
     res.statusCode = 200;
-  } else {
-    response = { 'error': 'Bad request' }
-    res.statusCode = 400;
+    res.end(JSON.stringify(response));
   }
 
   // Send the JSON response
-  res.end(JSON.stringify(response));
+  // res.end(JSON.stringify(response));
 });
 
 server.listen(port, hostname, () => {

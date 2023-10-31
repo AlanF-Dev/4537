@@ -6,30 +6,38 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Usman, Jason, Alan, Tas</p>
+    <p>Usman, Jason, Alan, Tas, Oscar</p>
     <textarea id="inputText"></textarea>
     <button id="analyzeButton">Analyze</button>
-    <span id="result"></span>
+    <br/>
     <span id="error"></span>
+    <span>Label: </span><span id="label"></span>
+    <br/>
+    <span>Score: </span><span id="score"></span>
 
     <script>
         document.getElementById('analyzeButton').addEventListener('click', async () => {
             const text = document.getElementById('inputText').value;
 
             try {
-                const response = await fetch(`http://localhost:3000/classify?text=${encodeURIComponent(text)}`);
+                const response = await fetch(`./classify?text=${encodeURIComponent(text)}`);
                 const data = await response.json();
+                console.log(data);
+                const json = JSON.stringify(data, null, 2);
 
                 if (response.ok) {
-                    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+                    document.getElementById('label').innerText = data[0].label;
+                    document.getElementById('score').innerText = data[0].score;
                     document.getElementById('error').innerText = '';
                 } else {
                     document.getElementById('error').innerText = data.error;
-                    document.getElementById('result').innerText = '';
+                    document.getElementById('label').innerText = '';
+                    document.getElementById('score').innerText = '';
                 }
             } catch (error) {
                 document.getElementById('error').innerText = 'Error occurred while making the request.';
-                document.getElementById('result').innerText = '';
+                document.getElementById('label').innerText = '';
+                document.getElementById('score').innerText = '';
             }
         });
     </script>
