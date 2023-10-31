@@ -38,6 +38,7 @@ server.on('request', async (req, res) => {
 
   // Set the response headers
   res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   let response;
   if (parsedUrl.pathname === '/classify' && text) {
