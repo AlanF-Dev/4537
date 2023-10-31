@@ -1,7 +1,6 @@
 {
   "name": "4537",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +18,7 @@
   "homepage": "https://github.com/AlanF-Dev/4537#readme",
   "dependencies": {
     "@xenova/transformers": "^2.7.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
