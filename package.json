@@ -19,5 +19,6 @@
   "dependencies": {
     "@xenova/transformers": "^2.7.0"
   },
+  "devDependencies": {},
   "description": ""
 }

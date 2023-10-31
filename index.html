@@ -6,17 +6,32 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Usman, Jason, Alan</p>
-    <textarea>
+    <p>Usman, Jason, Alan, Tas</p>
+    <textarea id="inputText"></textarea>
+    <button id="analyzeButton">Analyze</button>
+    <span id="result"></span>
+    <span id="error"></span>
 
-    </textarea>
-    <button>
-        Button
-    </button>
-    <span>
-    </span>
-    <span>
+    <script>
+        document.getElementById('analyzeButton').addEventListener('click', async () => {
+            const text = document.getElementById('inputText').value;
 
-    </span>
+            try {
+                const response = await fetch(`http://localhost:3000/classify?text=${encodeURIComponent(text)}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+                    document.getElementById('error').innerText = '';
+                } else {
+                    document.getElementById('error').innerText = data.error;
+                    document.getElementById('result').innerText = '';
+                }
+            } catch (error) {
+                document.getElementById('error').innerText = 'Error occurred while making the request.';
+                document.getElementById('result').innerText = '';
+            }
+        });
+    </script>
 </body>
 </html>
