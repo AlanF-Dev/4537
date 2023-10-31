@@ -26,8 +26,7 @@ class MyClassificationPipeline {
 
 // Define the HTTP server
 const server = http.createServer();
-const hostname = '127.0.0.1';
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Listen for requests made to the server
 server.on('request', async (req, res) => {
@@ -62,6 +61,6 @@ server.on('request', async (req, res) => {
   // res.end(JSON.stringify(response));
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(port, () => {
+  console.log(`Server running at Port:${port}`);
 });
