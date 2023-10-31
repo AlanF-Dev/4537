@@ -22,8 +22,6 @@
             try {
                 const response = await fetch(`./classify?text=${encodeURIComponent(text)}`);
                 const data = await response.json();
-                console.log(data);
-                const json = JSON.stringify(data, null, 2);
 
                 if (response.ok) {
                     document.getElementById('label').innerText = data[0].label;
