@@ -1,6 +1,7 @@
 const http = require('http');
 const querystring = require('querystring');
 const url = require('url');
+const fs = require('fs');
 
 class MyClassificationPipeline {
     static task = 'text-classification';
@@ -25,8 +26,7 @@ class MyClassificationPipeline {
 
 // Define the HTTP server
 const server = http.createServer();
-const hostname = '127.0.0.1';
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Listen for requests made to the server
 server.on('request', async (req, res) => {
@@ -37,23 +37,30 @@ server.on('request', async (req, res) => {
   const { text } = querystring.parse(parsedUrl.query);
 
   // Set the response headers
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // res.setHeader('Content-Type', 'application/json');
+  // res.setHeader('Access-Control-Allow-Origin', '*');
 
   let response;
+
+  if (parsedUrl.pathname == "/") {
+    fs.readFile('index.html', function (err, html) {
+        if (err) throw err;    
+        res.write(html);
+        res.end()
+    });
+  }
+
   if (parsedUrl.pathname === '/classify' && text) {
     const classifier = await MyClassificationPipeline.getInstance();
     response = await classifier(text);
     res.statusCode = 200;
-  } else {
-    response = { 'error': 'Bad request' }
-    res.statusCode = 400;
+    res.end(JSON.stringify(response));
   }
 
   // Send the JSON response
-  res.end(JSON.stringify(response));
+  // res.end(JSON.stringify(response));
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(port, () => {
+  console.log(`Server running at Port:${port}`);
 });
